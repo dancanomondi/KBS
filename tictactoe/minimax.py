@@ -1,5 +1,6 @@
 import random
 
+# Function to print the Tic-Tac-Toe board
 def print_board(board):
     print("---------------------------")
     border = "+---" * 3 + "+"
@@ -13,21 +14,24 @@ def print_board(board):
         if i < 2:
             print("+---" * 3 + "+")
 
-
+# Function to check if a player has won
 def is_winner(board, player):
-    # Check rows, columns, and diagonals for a win
+    # Check rows and columns for a win
     for i in range(3):
         if all([board[i][j] == player for j in range(3)]) or \
            all([board[j][i] == player for j in range(3)]):
             return True
+    # Check diagonals for a win
     if all([board[i][i] == player for i in range(3)]) or \
        all([board[i][2 - i] == player for i in range(3)]):
         return True
     return False
 
+# Function to check if the board is full
 def is_full(board):
     return all([cell != ' ' for row in board for cell in row])
 
+# Function to evaluate the current state of the board
 def evaluate(board):
     if is_winner(board, 'X'):
         return 1
@@ -35,7 +39,9 @@ def evaluate(board):
         return -1
     return 0
 
+# Minimax algorithm to determine the best move
 def minimax(board, depth, is_maximizing):
+    # Base cases: check for wins or a full board
     if is_winner(board, 'X'):
         return 1
     if is_winner(board, 'O'):
@@ -45,6 +51,7 @@ def minimax(board, depth, is_maximizing):
 
     if is_maximizing:
         max_eval = -float('inf')
+        # Try all possible moves and find the best evaluation
         for i in range(3):
             for j in range(3):
                 if board[i][j] == ' ':
@@ -55,6 +62,7 @@ def minimax(board, depth, is_maximizing):
         return max_eval
     else:
         min_eval = float('inf')
+        # Try all possible moves and find the worst evaluation for the opponent
         for i in range(3):
             for j in range(3):
                 if board[i][j] == ' ':
@@ -64,6 +72,7 @@ def minimax(board, depth, is_maximizing):
                     min_eval = min(min_eval, eval)
         return min_eval
 
+# Function for the computer's move using minimax
 def computer_move(board):
     best_move = None
     best_eval = -float('inf')
@@ -82,6 +91,7 @@ def computer_move(board):
     if best_move is not None:
         board[best_move[0]][best_move[1]] = 'X'
 
+# Main game loop
 def main():
     board = [[' ' for _ in range(3)] for _ in range(3)]
     player = 'O'
@@ -110,5 +120,6 @@ def main():
         
         player = 'X' if player == 'O' else 'O'
 
+# Entry point of the program
 if __name__ == "__main__":
     main()

@@ -12,7 +12,6 @@ def print_board(board):
         if i < 2:
             print("+---" * 3 + "+")
 
-
 def is_winner(board, player):
     # Check rows, columns, and diagonals for a win
     for i in range(3):
@@ -34,7 +33,7 @@ def evaluate(board):
         return -1
     return 0
 
-def minimax(board, depth, is_maximizing):
+def alphabeta(board, depth, is_maximizing, alpha, beta):
     if is_winner(board, 'X'):
         return 1
     if is_winner(board, 'O'):
@@ -48,9 +47,12 @@ def minimax(board, depth, is_maximizing):
             for j in range(3):
                 if board[i][j] == ' ':
                     board[i][j] = 'X'
-                    eval = minimax(board, depth + 1, False)
+                    eval = alphabeta(board, depth + 1, False, alpha, beta)
                     board[i][j] = ' '
                     max_eval = max(max_eval, eval)
+                    alpha = max(alpha, eval)
+                    if beta <= alpha:
+                        break
         return max_eval
     else:
         min_eval = float('inf')
@@ -58,9 +60,12 @@ def minimax(board, depth, is_maximizing):
             for j in range(3):
                 if board[i][j] == ' ':
                     board[i][j] = 'O'
-                    eval = minimax(board, depth + 1, True)
+                    eval = alphabeta(board, depth + 1, True, alpha, beta)
                     board[i][j] = ' '
                     min_eval = min(min_eval, eval)
+                    beta = min(beta, eval)
+                    if beta <= alpha:
+                        break
         return min_eval
 
 def computer_move(board):
@@ -71,7 +76,7 @@ def computer_move(board):
         for j in range(3):
             if board[i][j] == ' ':
                 board[i][j] = 'X'
-                move_eval = minimax(board, 0, False)
+                move_eval = alphabeta(board, 0, False, -float('inf'), float('inf'))
                 board[i][j] = ' '
                 
                 if move_eval > best_eval:

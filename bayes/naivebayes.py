@@ -1,7 +1,8 @@
-# Import necessary modules
 from pgmpy.models import BayesianNetwork
 from pgmpy.factors.discrete import TabularCPD
 from pgmpy.inference import VariableElimination
+import networkx as nx
+import matplotlib.pyplot as plt
 
 # Define the Bayesian Network structure
 model = BayesianNetwork([('Fever', 'Flu'),
@@ -40,3 +41,10 @@ cold_prob = 1 - flu_prob
 # Print the probabilities
 print("Probability of having Flu:", flu_prob)
 print("Probability of having Cold:", cold_prob)
+
+# Draw the Bayesian Network
+pos = nx.spring_layout(model, seed=42)
+nx.draw(model, pos, with_labels=True, node_size=3000, node_color='skyblue', font_size=10, font_color='black')
+
+# Show the plot
+plt.show()

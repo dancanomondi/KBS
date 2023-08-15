@@ -54,4 +54,4 @@ Example Output
 Probability of having Flu: 0.5475
 Probability of having Cold: 0.4525
 Disclaimer
-This example is a simplified demonstration of Bayesian networks for educational purposes. Real-world medical diagnosis involves more complex factors and considerations.
+
